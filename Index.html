@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KGDelta | Delta Executor Hub</title>
+
+<style>
+
+/* GENERAL */
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+color:white;
+background:black;
+overflow-x:hidden;
+}
+
+/* FIRE BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(270deg,#ff0000,#ff4500,#8b0000,#000000);
+background-size:800% 800%;
+animation:firebg 16s ease infinite;
+z-index:-2;
+}
+
+@keyframes firebg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* FIRE PARTICLES */
+
+.fire{
+position:fixed;
+width:4px;
+height:4px;
+background:orange;
+border-radius:50%;
+opacity:.8;
+animation:rise 6s linear infinite;
+z-index:-1;
+}
+
+@keyframes rise{
+0%{transform:translateY(100vh) scale(.5);opacity:1;}
+100%{transform:translateY(-10vh) scale(1.5);opacity:0;}
+}
+
+/* NAVBAR */
+
+nav{
+position:sticky;
+top:0;
+background:rgba(0,0,0,.85);
+display:flex;
+justify-content:center;
+gap:30px;
+padding:15px;
+box-shadow:0 0 15px red;
+z-index:100;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#ff4d4d;
+}
+
+/* HEADER */
+
+header{
+text-align:center;
+padding:70px 20px;
+}
+
+header h1{
+font-size:50px;
+color:#ff1c1c;
+margin:0;
+letter-spacing:2px;
+}
+
+header p{
+color:#ccc;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
+}
+
+/* SECTION */
+
+.section{
+background:rgba(0,0,0,.65);
+padding:35px;
+border-radius:15px;
+margin-bottom:35px;
+text-align:center;
+box-shadow:0 0 20px rgba(255,0,0,.5);
+}
+
+/* BUTTONS */
+
+.button{
+display:inline-block;
+padding:14px 28px;
+margin:10px;
+background:#5865F2;
+border-radius:8px;
+color:white;
+text-decoration:none;
+font-size:16px;
+transition:.25s;
+}
+
+.button:hover{
+transform:scale(1.07);
+box-shadow:0 0 15px #5865F2;
+}
+
+/* STATUS PANEL */
+
+.status{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.status-item{
+padding:10px 18px;
+border-radius:25px;
+font-weight:bold;
+}
+
+.working{
+background:#163d24;
+color:#4cff7c;
+}
+
+.down{
+background:#3b1616;
+color:#ff5c5c;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:25px;
+color:#aaa;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- FIRE PARTICLES SCRIPT -->
+
+<script>
+for(let i=0;i<35;i++){
+let f=document.createElement("div");
+f.className="fire";
+f.style.left=Math.random()*100+"vw";
+f.style.animationDuration=(4+Math.random()*4)+"s";
+f.style.opacity=Math.random();
+document.body.appendChild(f);
+}
+</script>
+
+<!-- NAVBAR -->
+
+<nav>
+<a href="#home">Home</a>
+<a href="#downloads">Downloads</a>
+<a href="#status">Status</a>
+<a href="#support">Support</a>
+</nav>
+
+<!-- HEADER -->
+
+<header id="home">
+<h1>KGDelta</h1>
+<p>Delta Executor Hub • Powered by KG Gaming</p>
+</header>
+
+<div class="container">
+
+<!-- STATUS PANEL -->
+
+<div class="section" id="status">
+
+<h2>📊 Executor Status</h2>
+
+<div class="status">
+
+<div class="status-item" id="directStatus">
+Checking Direct Install...
+</div>
+
+<div class="status-item" id="ipaStatus">
+Checking iOS IPA...
+</div>
+
+<div class="status-item" id="apkStatus">
+Checking Android APK...
+</div>
+
+</div>
+
+</div>
+
+<!-- DOWNLOADS -->
+
+<div class="section" id="downloads">
+
+<h2>📥 Downloads</h2>
+
+<h3>📱 iOS</h3>
+
+<a class="button" href="https://deltaexploits.gg/delta-executor-ios" target="_blank">
+Direct Install
+</a>
+
+<a class="button" href="https://cdn.gloopup.net/file/Delta-2.710.707.ipa">
+Download IPA
+</a>
+
+<a class="button" href="https://khoindvn.io.vn" target="_blank">
+Website to download Ksign / Esign
+</a>
+
+<p style="color:#ccc;">
+Use Direct Install or sign the IPA using Ksign / Esign.
+</p>
+
+<hr style="margin:30px;border-color:#333;">
+
+<h3>🤖 Android</h3>
+
+<a class="button" href="https://cdn.gloopup.net/file/Delta-2.710.707-02.apk">
+Download APK
+</a>
+
+</div>
+
+<!-- SUPPORT -->
+
+<div class="section" id="support">
+
+<h2>💬 Support</h2>
+
+<p>Need help installing Delta?</p>
+
+<a class="button" href="https://discord.gg/sy5jK2ebP8" target="_blank">
+Join KG Gaming Discord
+</a>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 KGDelta • KG Gaming Hub
+</footer>
+
+<!-- STATUS CHECK SCRIPT -->
+
+<script>
+
+async function checkStatus(url, element, label){
+
+try{
+
+await fetch(url,{mode:"no-cors"});
+
+element.classList.add("working");
+
+element.innerText = label + ": Working";
+
+}
+
+catch{
+
+element.classList.add("down");
+
+element.innerText = label + ": Down";
+
+}
+
+}
+
+checkStatus(
+"https://deltaexploits.gg/delta-executor-ios",
+document.getElementById("directStatus"),
+"iOS Direct Install"
+);
+
+checkStatus(
+"https://cdn.gloopup.net/file/Delta-2.710.707.ipa",
+document.getElementById("ipaStatus"),
+"iOS IPA"
+);
+
+checkStatus(
+"https://cdn.gloopup.net/file/Delta-2.710.707-02.apk",
+document.getElementById("apkStatus"),
+"Android APK"
+);
+
+</script>
+
+</body>
+</html>
