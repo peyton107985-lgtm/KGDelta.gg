@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KG Gaming Hub</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+color:white;
+background:black;
+overflow-x:hidden;
+}
+
+/* FIRE BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(180deg,#ff0000,#ff6a00,#ff0000);
+background-size:200% 200%;
+animation:fireLoop 6s linear infinite;
+z-index:-2;
+}
+
+@keyframes fireLoop{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* FIRE PARTICLES */
+
+.fire{
+position:fixed;
+width:4px;
+height:4px;
+background:orange;
+border-radius:50%;
+opacity:.8;
+animation:rise 6s linear infinite;
+z-index:-1;
+}
+
+@keyframes rise{
+0%{transform:translateY(100vh) scale(.5);opacity:1;}
+100%{transform:translateY(-10vh) scale(1.4);opacity:0;}
+}
+
+/* COVER */
+
+.cover{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,.75);
+text-align:center;
+z-index:100;
+}
+
+.cover h1{
+font-size:60px;
+color:#ff2a2a;
+margin:0;
+}
+
+.enter-btn{
+margin-top:20px;
+padding:14px 30px;
+background:#5865F2;
+border:none;
+border-radius:8px;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+display:none;
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+}
+
+/* SECTIONS */
+
+.section{
+display:none;
+background:rgba(0,0,0,.65);
+padding:35px;
+border-radius:12px;
+margin-bottom:30px;
+text-align:center;
+box-shadow:0 0 15px rgba(255,0,0,.4);
+}
+
+.active{
+display:block;
+}
+
+/* BUTTON */
+
+.button{
+display:inline-block;
+padding:12px 24px;
+margin:10px;
+background:#5865F2;
+border-radius:8px;
+color:white;
+text-decoration:none;
+cursor:pointer;
+}
+
+/* HUB GRID */
+
+.hub-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-top:25px;
+}
+
+.hub-card{
+background:#111;
+padding:20px;
+border-radius:10px;
+cursor:pointer;
+box-shadow:0 0 10px rgba(255,0,0,.4);
+}
+
+/* GAME GRID */
+
+.game-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:20px;
+margin-top:25px;
+}
+
+.game-card{
+background:#111;
+border:2px solid rgba(255,0,0,.5);
+border-radius:12px;
+padding:18px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+cursor:pointer;
+transition:.25s;
+}
+
+.game-card:hover{
+transform:scale(1.08);
+border-color:#ff4500;
+box-shadow:0 0 20px #ff4500;
+}
+
+.game-logo{
+width:60px;
+height:60px;
+object-fit:contain;
+}
+
+.game-panel{
+margin-top:25px;
+background:#0e0e0e;
+padding:20px;
+border-radius:10px;
+}
+
+.status{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.status-item{
+padding:10px 16px;
+border-radius:20px;
+font-weight:bold;
+}
+
+.working{
+background:#163d24;
+color:#4cff7c;
+}
+
+.down{
+background:#3b1616;
+color:#ff5c5c;
+}
+
+.popup{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.85);
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.popup-box{
+background:#111;
+padding:30px;
+border-radius:10px;
+max-width:400px;
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<script>
+
+/* FIRE PARTICLES */
+
+for(let i=0;i<40;i++){
+let f=document.createElement("div");
+f.className="fire";
+f.style.left=Math.random()*100+"vw";
+f.style.animationDuration=(4+Math.random()*4)+"s";
+document.body.appendChild(f);
+}
+
+/* ENTER SITE */
+
+function enterSite(){
+document.getElementById("cover").style.display="none";
+document.getElementById("main").style.display="block";
+}
+
+/* HUB SWITCH */
+
+function openHub(hub){
+document.querySelectorAll(".section").forEach(s=>{
+s.classList.remove("active");
+});
+document.getElementById(hub).classList.add("active");
+}
+
+/* GAME PANEL */
+
+function showGame(name,status,updates){
+
+document.getElementById("gameContent").innerHTML=
+"<h2>"+name+"</h2>"+
+"<a class='button' target='_blank' href='"+status+"'>View Server Status</a>"+
+"<a class='button' target='_blank' href='"+updates+"'>View Updates</a>";
+
+}
+
+/* DELTA STATUS CHECK */
+
+async function checkStatus(url,element,label){
+
+try{
+await fetch(url,{mode:"no-cors"});
+element.classList.add("working");
+element.innerText=label+" Working";
+}catch{
+element.classList.add("down");
+element.innerText=label+" Down";
+}
+
+}
+
+window.onload=function(){
+
+checkStatus("https://deltaexploits.gg/delta-executor-ios",document.getElementById("directStatus"),"Direct Install");
+checkStatus("https://cdn.gloopup.net/file/Delta-2.710.707.ipa",document.getElementById("ipaStatus"),"IPA");
+checkStatus("https://cdn.gloopup.net/file/Delta-2.710.707-02.apk",document.getElementById("apkStatus"),"Android");
+
+};
+
+/* KSIGN POPUP */
+
+function openKsignPopup(){
+document.getElementById("ksignPopup").style.display="flex";
+}
+
+function closePopup(){
+document.getElementById("ksignPopup").style.display="none";
+}
+
+function continueKsign(){
+window.open("https://khoindvn.io.vn","_blank");
+closePopup();
+}
+
+</script>
+
+<div class="cover" id="cover">
+<h1>KG Gaming Hub</h1>
+<p>Join our Discord community</p>
+<a class="button" href="https://discord.gg/sy5jK2ebP8" target="_blank">Join Discord</a>
+<button class="enter-btn" onclick="enterSite()">Enter Website</button>
+</div>
+
+<div class="main" id="main">
+
+<div class="section active" id="hubselect">
+
+<h2>Select a Hub</h2>
+
+<div class="hub-grid">
+
+<div class="hub-card" onclick="openHub('deltahub')">
+<h3>Delta Hub</h3>
+<p>Executor downloads</p>
+</div>
+
+<div class="hub-card" onclick="openHub('gaminghub')">
+<h3>Gaming Updates</h3>
+<p>Game status & news</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section" id="deltahub">
+
+<h2>Delta Downloads</h2>
+
+<div class="status">
+<div class="status-item" id="directStatus">Checking Direct Install...</div>
+<div class="status-item" id="ipaStatus">Checking IPA...</div>
+<div class="status-item" id="apkStatus">Checking APK...</div>
+</div>
+
+<h3>iOS</h3>
+
+<a class="button" href="https://deltaexploits.gg/delta-executor-ios" target="_blank">Direct Install</a>
+
+<a class="button" href="https://cdn.gloopup.net/file/Delta-2.710.707.ipa">Download IPA</a>
+
+<h3>Android</h3>
+
+<a class="button" href="https://cdn.gloopup.net/file/Delta-2.710.707-02.apk">Download APK</a>
+
+<h3>Sideload Tools</h3>
+
+<button class="button" onclick="openKsignPopup()">Download Ksign / Esign</button>
+
+<br><br>
+
+<a class="button" href="https://deltaexploits.gg" target="_blank">Verify Operational Status</a>
+
+<a class="button" href="https://discord.gg/sy5jK2ebP8" target="_blank">Report Status Issue</a>
+
+<br><br>
+
+<button class="button" onclick="openHub('hubselect')">Back</button>
+
+</div>
+
+<div class="section" id="gaminghub">
+
+<h2>Gaming Updates</h2>
+
+<div class="game-grid">
+
+<button class="game-card" onclick="showGame('Fortnite','https://status.epicgames.com','https://www.fortnite.com/news')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg" class="game-logo">
+<span>Fortnite</span>
+</button>
+
+<button class="game-card" onclick="showGame('Roblox','https://status.roblox.com','https://devforum.roblox.com')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Roblox_Logo_2022.svg" class="game-logo">
+<span>Roblox</span>
+</button>
+
+<button class="game-card" onclick="showGame('Valorant','https://status.riotgames.com/valorant','https://playvalorant.com/en-us/news')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo.svg" class="game-logo">
+<span>Valorant</span>
+</button>
+
+<button class="game-card" onclick="showGame('Minecraft','https://minecraftstatus.net','https://www.minecraft.net/en-us/article')">
+<img src="https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png" class="game-logo">
+<span>Minecraft</span>
+</button>
+
+<button class="game-card" onclick="showGame('Call of Duty','https://support.activision.com/onlineservices','https://www.callofduty.com/blog')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Call_of_Duty_logo.svg" class="game-logo">
+<span>Call of Duty</span>
+</button>
+
+<button class="game-card" onclick="showGame('Rainbow Six Siege','https://rainbow6.ubisoft.com/status','https://www.ubisoft.com/en-us/game/rainbow-six/siege/news-updates')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Rainbow_Six_Siege_logo.svg" class="game-logo">
+<span>R6 Siege</span>
+</button>
+
+<button class="game-card" onclick="showGame('GTA V','https://support.rockstargames.com/servicestatus','https://www.rockstargames.com/newswire')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Grand_Theft_Auto_V_logo.svg" class="game-logo">
+<span>GTA V</span>
+</button>
+
+<button class="game-card" onclick="showGame('GTA VI','https://www.rockstargames.com','https://www.rockstargames.com/newswire')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Grand_Theft_Auto_VI_logo.svg" class="game-logo">
+<span>GTA VI</span>
+</button>
+
+</div>
+
+<div id="gameContent" class="game-panel">
+
+<h3>Select a game</h3>
+
+<p>Click a game above to view status and updates.</p>
+
+</div>
+
+<h3>Support</h3>
+
+<p>If you need help, join our Discord.</p>
+
+<a class="button" href="https://discord.gg/sy5jK2ebP8" target="_blank">
+Open Support Server
+</a>
+
+<br><br>
+
+<button class="button" onclick="openHub('hubselect')">Back</button>
+
+</div>
+
+</div>
+
+<div class="popup" id="ksignPopup">
+
+<div class="popup-box">
+
+<h3>External Website</h3>
+
+<p>Ksign / Esign may contain advertisements.</p>
+
+<button class="button" onclick="continueKsign()">Continue</button>
+
+<button class="button" onclick="closePopup()">Cancel</button>
+
+</div>
+
+</div>
+
+</body>
+</html>
